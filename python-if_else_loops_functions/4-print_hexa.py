@@ -18,4 +18,4 @@ for i in range(99):
     else:
         c = k
 
-    print(f"{i} = 0x{c}")
+    print(i, " = 0x{}".format(c))
