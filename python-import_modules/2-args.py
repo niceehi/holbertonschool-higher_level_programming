@@ -6,11 +6,11 @@ if __name__ == "__main__":
     count = len(args)
 
     if count == 0:
-        print("Number of arguments.")
+        print("0 arguments.")
     elif count == 1:
-        print("Number of argument: 1")
+        print("1 argument:")
     else:
-        print(f"Number of arguments: {count}")
+        print(f"{count} arguments:")
 
     for i, arg in enumerate(args, 1):
         print(f"{i}: {arg}")
