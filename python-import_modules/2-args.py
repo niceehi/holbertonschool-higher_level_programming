@@ -2,5 +2,5 @@
 from sys import argv
 
 if __name__ == "__main__":
-    print(len(argv))
+    print(len(argv)-1)
     print(argv)
