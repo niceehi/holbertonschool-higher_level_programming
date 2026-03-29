@@ -2,4 +2,4 @@
 
 def print_reversed_list_integer(my_list=[]):
     for i in (0, len(my_list)):
-        print("{:d}".format(format(my_list[len(my_list) - i])))
+        print("{:d}".format(my_list[len(my_list) - i]))
