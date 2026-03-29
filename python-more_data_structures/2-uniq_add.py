@@ -5,5 +5,7 @@ def uniq_add(my_list=[]):
     uniq_numbers = []
     for i in my_list:
         if i not in uniq_numbers:
-            sum = sum + i
+            uniq_numbers.append(i)
+    for i in uniq_numbers:
+        sum = sum + i
     return sum
