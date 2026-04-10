@@ -3,6 +3,7 @@
 """Defines an integer addition function."""
 
 def add_integer(a, b=98):
+
     """
     Adds two numbers, which can be either integers or floats.
     """
