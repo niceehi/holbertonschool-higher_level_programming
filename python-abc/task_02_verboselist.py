@@ -12,6 +12,7 @@ class VerboseList(list):
     Args:
         list (class): original list class
     """
+
     def append(self, item):
         """
         append Improve append message with verbose
@@ -44,12 +45,11 @@ class VerboseList(list):
 
     def pop(self, index=-1):
         """
-        pop Pop extend message with verbose
+        pop Pop element with verbose message
 
         Args:
-            index (int, optional): Number of the index to pop.
-            Defaults to None.
+            index (int, optional): index to pop from list
         """
-
-        print(f"Popped [{self[index]}] from the list.")
-        super().pop(index)
+        item = super().pop(index)
+        print(f"Popped [{item}] from the list.")
+        return item
