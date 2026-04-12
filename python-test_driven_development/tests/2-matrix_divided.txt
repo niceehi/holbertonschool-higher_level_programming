@@ -1,7 +1,7 @@
 matrix_divided tests
 ====================
 
->>> matrix_divided = __import__('matrix_divided').matrix_divided
+>>> matrix_divided = __import__('2-matrix_divided').matrix_divided
 
 Normal case
 >>> matrix_divided([[2, 4], [6, 8]], 2)
