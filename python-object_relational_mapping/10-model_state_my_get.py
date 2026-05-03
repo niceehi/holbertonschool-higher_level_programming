@@ -1,44 +1,24 @@
 #!/usr/bin/python3
-"""
-prints the State object with the name passed as argument
-from the database hbtn_0e_6_usa
-"""
-
-from sqlalchemy import (create_engine)
-import sys
-from model_state import Base, State
-from sqlalchemy.orm import sessionmaker
+""" FETCH JUST A LETTER WITH PYTHON """
 
 if __name__ == "__main__":
-
-    # Check input arguments
+    import sys
+    from sqlalchemy.ext.declarative import declarative_base
+    from model_state import Base, State
+    from sqlalchemy import (create_engine)
+    from sqlalchemy.orm import sessionmaker
     if len(sys.argv) != 5:
-        print(f"Usage: {sys.argv[0]} "
-              "<mysql username> <mysql password> <database name>"
-              "<state name to search>")
-        sys.exit(1)
-
-    searched_state = sys.argv[4]
-
-    # DB connection
+        exit
     engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
-        sys.argv[1], sys.argv[2], sys.argv[3]), pool_pre_ping=True)
-
-    # Create tables
+        sys.argv[1], sys.argv[2], sys.argv[3]),
+                        pool_pre_ping=True)
     Base.metadata.create_all(engine)
-
-    # Create a configured "Session" class
     Session = sessionmaker(bind=engine)
-    session = Session()
-
-    # Query and print the first states
-    states = session.query(State).filter(State.name == searched_state).all()
-
-    if states:
-        for state in states:
-            print(f"{state.id}")
-            break
-    else:
+    cursor = Session()
+    result = cursor.query(State).filter(State.name == sys.argv[4])
+    found = False
+    for col in result:
+        found = True
+        print(f'{col.id}')
+    if not found:
         print("Not found")
-
-    session.close()

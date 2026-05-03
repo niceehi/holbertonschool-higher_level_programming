@@ -1,44 +1,22 @@
 #!/usr/bin/python3
-"""
-adds the State object “Louisiana” to the database hbtn_0e_6_usa
-"""
-
-from sqlalchemy import (create_engine)
-import sys
-from model_state import Base, State
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import insert
+""" ADD A NEW STATE WITH PYTHON """
 
 if __name__ == "__main__":
+    import sys
+    from sqlalchemy.ext.declarative import declarative_base
+    from model_state import Base, State
+    from sqlalchemy import (create_engine)
+    from sqlalchemy.orm import sessionmaker
 
-    # Check input arguments
-    if len(sys.argv) != 4:
-        print(f"Usage: {sys.argv[0]} "
-              "<mysql username> <mysql password> <database name>")
-        sys.exit(1)
-
-    # DB connection
     engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
-        sys.argv[1], sys.argv[2], sys.argv[3]), pool_pre_ping=True)
-
-    # Create tables
+        sys.argv[1], sys.argv[2], sys.argv[3]),
+                        pool_pre_ping=True)
     Base.metadata.create_all(engine)
-
-    # Create a configured "Session" class
     Session = sessionmaker(bind=engine)
-    session = Session()
+    cursor = Session()
+    Louisiana = State(name="Louisiana")
+    cursor.add(Louisiana)
+    cursor.commit()
 
-    add_state = insert(State).values(name='Louisiana')
-    session.execute(add_state)
-    session.commit()
-
-    # Query and print the Louisiana state_id
-    states = session.query(State).order_by(State.id).filter(
-        State.name == 'Louisiana').all()
-    if states:
-        for state in states:
-            print(f"{state.id}")
-            break
-    else:
-        print("Not found")
-    session.close()
+    for col in cursor.query(State).filter(State.name == "Louisiana"):
+        print(f'{col.id}')
