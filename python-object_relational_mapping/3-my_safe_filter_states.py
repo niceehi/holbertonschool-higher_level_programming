@@ -1,29 +1,32 @@
 #!/usr/bin/python3
-""" DOCUMENTATIONS """
-if __name__ == "__main__":
-    import MySQLdb as DB
-    import sys
+"""Takes in arguments and displays all values in the states table
+of hbtn_0e_0_usa where name matches the argument and
+that is safe from MySQL injections"""
 
-    if len(sys.argv) == 5:
-        mysql_username = sys.argv[1]
-        mysql_password = sys.argv[2]
-        database_name = sys.argv[3]
-        state_name_searched = sys.argv[4]
-        if state_name_searched.find(";") != -1:
-            safe = state_name_searched.split(";")[0][:-1]
-        else:
-            safe = state_name_searched
-        db_connect = DB.connect(host="localhost",
-                                port=3306,
-                                user=mysql_username,
-                                passwd=mysql_password,
-                                db=database_name)
-        db_cursor = db_connect.cursor()
-        db_cursor.execute(
-            "SELECT * FROM states WHERE \
-                states.name LIKE BINARY '{}';"
-            .format(safe)
-            )
-        rows_selected = db_cursor.fetchall()
-        for row in rows_selected:
-            print(row)
+
+import MySQLdb
+import sys
+
+
+if __name__ == "__main__":
+    """execute only if from python interpreter itself"""
+
+    """ co to DB"""
+    db = MySQLdb.connect(
+        host="localhost",
+        port=3306,
+        user=sys.argv[1],
+        password=sys.argv[2],
+        database=sys.argv[3],
+        )
+
+    cursor = db.cursor()
+
+    state_name = sys.argv[4]
+    cursor.execute("SELECT * FROM states WHERE name = %s\
+        ORDER BY states.id ASC", (sys.argv[4], ))
+
+    for state in cursor.fetchall():
+        print(state)
+    cursor.close()
+    db.close()

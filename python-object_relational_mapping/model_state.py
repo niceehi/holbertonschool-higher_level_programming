@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-""" DOCUMENTATION """
+"""
+Contains the class definition of a State using SQLAlchemy ORM.
+"""
+
 
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
@@ -8,9 +11,7 @@ Base = declarative_base()
 
 
 class State(Base):
-    """ Class state that inherit of base """
-
+    """State class"""
     __tablename__ = 'states'
-    id = Column("id", Integer, nullable=False, unique=True,
-                autoincrement="auto", primary_key=True)
-    name = Column("name", String(128), nullable=False)
+    id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
+    name = Column(String(128), nullable=False)

@@ -1,22 +1,36 @@
 #!/usr/bin/python3
-""" ADD A NEW STATE WITH PYTHON """
+"""
+Script that adds a new State object to the database
+hbtn_0e_6_usa and prints its id.
+"""
+
+
+import sys
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from model_state import Base, State
+
 
 if __name__ == "__main__":
-    import sys
-    from sqlalchemy.ext.declarative import declarative_base
-    from model_state import Base, State
-    from sqlalchemy import (create_engine)
-    from sqlalchemy.orm import sessionmaker
+    """
+    Main function to add a new State object to the specified database
+    and print its id.
+    """
+    username, password, database = sys.argv[1], sys.argv[2], sys.argv[3]
 
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
-        sys.argv[1], sys.argv[2], sys.argv[3]),
-                        pool_pre_ping=True)
-    Base.metadata.create_all(engine)
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'
+                           .format(username, password, database))
+
     Session = sessionmaker(bind=engine)
-    cursor = Session()
-    Louisiana = State(name="Louisiana")
-    cursor.add(Louisiana)
-    cursor.commit()
+    session = Session()
 
-    for col in cursor.query(State).filter(State.name == "Louisiana"):
-        print(f'{col.id}')
+    # Create a new State object
+    state_name = State(name="Louisiana")
+    session.add(state_name)
+
+    # Commit the transaction to the database
+    session.commit()
+
+    print(state_name.id)
+
+    session.close()

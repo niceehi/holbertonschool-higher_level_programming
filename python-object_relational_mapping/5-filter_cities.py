@@ -1,33 +1,29 @@
 #!/usr/bin/python3
-""" DOCUMENTATIONS """
+""" Takes the name of a state as an arg and l
+ists all cities from the database hbtn_0e_4_usa
+Usage: ./0-select_states.py <mysql username>
+<mysql password> <database name> """
+
+
+import MySQLdb
+import sys
+
+
 if __name__ == "__main__":
-    import MySQLdb as DB
-    import sys
+    db = MySQLdb.connect(
+        host="localhost",
+        port=3306,
+        user=sys.argv[1],
+        password=sys.argv[2],
+        database=sys.argv[3],)
 
-    if len(sys.argv) == 5:
-        mysql_username = sys.argv[1]
-        mysql_password = sys.argv[2]
-        database_name = sys.argv[3]
-        state_name_searched = sys.argv[4]
-
-        db_connect = DB.connect(host="localhost",
-                                port=3306,
-                                user=mysql_username,
-                                passwd=mysql_password,
-                                db=database_name)
-        db_cursor = db_connect.cursor()
-        db_cursor.execute(
-            " SELECT cities.name \
-                FROM cities \
-                INNER JOIN states \
-                ON states.id = cities.state_id \
-                WHERE states.name = '{}'"
-            .format(state_name_searched)
-            )
-        rows_selected = db_cursor.fetchall()
-        sep = ""
-        for row in rows_selected:
-            print(sep, end="")
-            print(row[0], end="")
-            sep = ", "
-        print()
+    cursor = db.cursor()
+    cursor.execute("""
+        SELECT cities.name FROM cities
+        JOIN states ON cities.state_id = states.id
+        WHERE states.name = %s
+        ORDER BY cities.id ASC
+        """, (sys.argv[4], ))
+    print(", ".join(map(lambda x: x[0], cursor.fetchall())))
+    cursor.close()
+    db.close()
