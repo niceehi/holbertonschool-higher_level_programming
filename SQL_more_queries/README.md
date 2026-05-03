@@ -1,1 +1,1 @@
-# SQL - More queries 
+it is README file 
