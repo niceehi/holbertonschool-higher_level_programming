@@ -1,11 +1,9 @@
 #!/usr/bin/python3
-"""A first Flask API """
-
+"""A first Flask API"""
 
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
-
 
 users = {}
 
@@ -31,38 +29,34 @@ def status():
 @app.route("/users/<username>", methods=["GET"])
 def user_profile(username):
     """Return the user object for the given username"""
-    profile = users.get(username)
 
-    if not profile:
+    if username not in users:
         return jsonify({"error": "User not found"}), 404
-    else:
-        return jsonify(profile)
+
+    return jsonify(users[username])
 
 
 @app.route("/add_user", methods=["POST"])
 def add_user():
-    """Add a new user to the dict."""
-    user_data = request.get_json()
-    username = user_data.get("username")
+    """Add a new user to the dictionary"""
 
-    if not username:
+    user_data = request.get_json()
+
+    if not user_data or "username" not in user_data:
         return jsonify({"error": "Username is required"}), 400
 
-    if username in users:
-        return jsonify({"error": "User already exists"}), 400
+    username = user_data["username"]
 
-    user_data = {
-        "username": username,
-        "name": user_data.get("name"),
-        "age": user_data.get("age"),
-        "city": user_data.get("city"),
-    }
+    if username in users:
+        return jsonify({"error": "Username already exists"}), 400
 
     users[username] = user_data
 
-    return jsonify({"message": "User added", "user": user_data}), 201
+    return jsonify({
+        "message": "User added",
+        "user": user_data
+    }), 201
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-"""debug=True for flask automatisation and detailed errors"""
