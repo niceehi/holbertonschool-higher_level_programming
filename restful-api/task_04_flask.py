@@ -47,19 +47,17 @@ def add_user():
 
     if not username:
         return jsonify({"error": "Username is required"}), 400
-    else:
-        user_data = {
-            "username": username,
-            "name": user_data.get("name"),
-            "age": user_data.get("age"),
-            "city": user_data.get("city"),
-        }
+
+    if username in users:
+        return jsonify({"error": "Username already exists"}), 400
+
+    user_data = {
+        "username": username,
+        "name": user_data.get("name"),
+        "age": user_data.get("age"),
+        "city": user_data.get("city"),
+    }
 
     users[username] = user_data
 
     return jsonify({"message": "User added", "user": user_data}), 201
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-"""debug=True for flask automatisation and detailed errors"""
