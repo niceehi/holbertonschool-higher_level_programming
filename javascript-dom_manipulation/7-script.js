@@ -1,5 +1,5 @@
 fetch('https://swapi-api.hbtn.io/api/films/?format=json')
-  // Catch the brut HTTP and convert to JSON
+
   .then(response => response.json())
   // Once we have the data
   .then(data => {

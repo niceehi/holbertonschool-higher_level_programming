@@ -1,4 +1,3 @@
-// waiting the loading of all the page (script is in header)
 document.addEventListener('DOMContentLoaded', function () {
   fetch('https://hellosalut.stefanbohacek.dev/?lang=fr')
   // Catch the brut HTTP and convert to JSON
