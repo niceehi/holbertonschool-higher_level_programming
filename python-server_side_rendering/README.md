@@ -1,1 +1,1 @@
-#Python - Server-Side Rendering
+Server-Side Rendering
